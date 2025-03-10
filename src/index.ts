@@ -1,13 +1,16 @@
-import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { html } from 'hono/html'
+import { serveStatic } from 'hono/vercel'
 
 const app = new Hono()
+
+// Optional: Serve static files if you add them later
+app.use('/static/*', serveStatic({ root: './' }))
 
 // Home route - serves the initial frame
 app.get('/', (c) => {
   const frameImage = `https://placehold.co/1920x1005?text=Welcome+to+My+Frame`
-  const framePostUrl = c.req.url
+  const framePostUrl = `${c.req.url}`
 
   return c.html(html`
     <html lang="en">
@@ -51,7 +54,7 @@ app.post('/', async (c) => {
     }
 
     const frameImage = `https://placehold.co/1920x1005/${backgroundColor}/white?text=${encodeURIComponent(messageText)}`
-    const framePostUrl = c.req.url
+    const framePostUrl = `${c.req.url}`
 
     return c.html(html`
       <html lang="en">
@@ -73,11 +76,5 @@ app.post('/', async (c) => {
   }
 })
 
-// Start the server
-const port = process.env.PORT || 3000
-console.log(`Server is running on port ${port}`)
-
-serve({
-  fetch: app.fetch,
-  port: Number(port),
-})
+// Export for Vercel
+export default app
