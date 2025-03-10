@@ -6,7 +6,7 @@ const app = new Hono()
 // Home route - serves the initial frame
 app.get('/', (c) => {
   // For production deployment, use the actual host URL
-  const host = c.req.headers.get('host') || 'localhost:3000'
+  const host = c.req.header.get('host') || 'localhost:3000'
   const protocol = host.includes('localhost') ? 'http' : 'https'
   const baseUrl = `${protocol}://${host}`
   
@@ -65,7 +65,7 @@ app.post('/', async (c) => {
     }
 
     // For production deployment, use the actual host URL
-    const host = c.req.headers.get('host') || 'localhost:3000'
+    const host = c.req.header.get('host') || 'localhost:3000'
     const protocol = host.includes('localhost') ? 'http' : 'https'
     const baseUrl = `${protocol}://${host}`
     
